@@ -29,7 +29,7 @@ object Main5Supervisor extends App {
   val sink = Sink.foreach[Int](e => println(s"element=$e"))
 
   // フローを作成
-  val flow = Flow[Int].map{e =>
+  val flow = Flow[Int].map { e =>
     // 要素の値が3の場合に例外を発生させる
     if (e == 3) throw new IllegalArgumentException("oops!") else e
   }

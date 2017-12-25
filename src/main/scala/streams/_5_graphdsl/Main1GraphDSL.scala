@@ -37,8 +37,8 @@ object Main1GraphDSL extends App {
 
         // グラフ
         source ~> flow1 ~> balance ~> flow2_1 ~> merge ~> flow3 ~> sink
-        balance ~> flow2_2 ~> merge
-        balance ~> flow2_3 ~> merge
+                           balance ~> flow2_2 ~> merge
+                           balance ~> flow2_3 ~> merge
         ClosedShape
     })
 

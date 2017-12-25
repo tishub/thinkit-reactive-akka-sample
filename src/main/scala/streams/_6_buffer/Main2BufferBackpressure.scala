@@ -18,9 +18,7 @@ object Main2BufferBackpressure extends App {
   implicit val system = ActorSystem("simple-stream")
   implicit val materializer = ActorMaterializer(
     ActorMaterializerSettings(system)
-      .withInputBuffer(
-        initialSize = 1,
-        maxSize = 1))
+      .withInputBuffer(initialSize = 1, maxSize = 1))
 
   // RunnableGraphの生成
   val runnableGraph =
@@ -28,7 +26,8 @@ object Main2BufferBackpressure extends App {
       implicit builder =>
         import GraphDSL.Implicits._
         // 1秒間に5件のデータを流すソース
-        val source = Source(1 to 15).throttle(5, 1.second, 1, ThrottleMode.shaping)
+        val source = Source(1 to 15)
+          .throttle(elements = 5, per = 1.second, maximumBurst = 1, mode = ThrottleMode.shaping)
         val sink: Sink[String, Future[Done]] = Sink.foreach[String](println)
 
         // 2つの出力にブロードキャスト
@@ -53,7 +52,7 @@ object Main2BufferBackpressure extends App {
         val buffer = Flow[Int].buffer(2, OverflowStrategy.backpressure)
 
         // グラフ
-        source ~> flow ~> broadcast ~>  buffer ~> slowFlow ~> sink
+        source ~> flow ~> broadcast ~> buffer ~> slowFlow ~> sink
                           broadcast ~> fastFlow ~> sink
         ClosedShape
     })
