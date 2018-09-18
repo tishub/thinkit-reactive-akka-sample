@@ -52,7 +52,7 @@ object CafeServer extends App {
   implicit val materializer = ActorMaterializer()
 
   // HTTPサーバーの起動
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 8082)
+  val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
   implicit val executionContext = system.dispatcher
   bindingFuture
     .map { serverBinding =>
