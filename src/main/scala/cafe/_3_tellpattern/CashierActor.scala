@@ -1,6 +1,7 @@
 package cafe._3_tellpattern
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import cafe._3_tellpattern.BaristaActor.Order
 
 class CashierActor extends Actor with ActorLogging {
   import CashierActor._
@@ -10,8 +11,8 @@ class CashierActor extends Actor with ActorLogging {
   def receive: Receive = {
   	case Initialize =>
 	    log.info("starting akka cafe")
-    case Order =>
-      barista ! BaristaActor.Order("Coffee", 2)  // 「!」でメッセージを送信
+    case order: Order =>
+      barista ! order // 「!」でメッセージを送信
     case Shutdown =>
       log.info("terminating akka cafe")
       context.system.terminate()
@@ -26,6 +27,5 @@ object CashierActor {
   // メッセージプロトコルの定義
   case object Initialize
   case object Shutdown
-  case object Order
   case class OrderCompleted(message: String)
 }

@@ -10,7 +10,7 @@ object ApplicationMain extends App {
   val cashierActor = system.actorOf(CashierActor.props, "cashierActor")
 
   cashierActor ! CashierActor.Initialize
-  cashierActor ! CashierActor.Order
+  cashierActor ! BaristaActor.Order("Coffee", 2)
 
   import scala.concurrent.duration._
   import system.dispatcher
